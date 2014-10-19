@@ -13,11 +13,26 @@ Skip the BuddyPress avatar cropper when uploading a new avatar image.
 
 Skip the BuddyPress avatar (or profile photo) cropper when uploading a new avatar image.
 
+__Missing features?__
+
+Submit a request on the [forum](https://wordpress.org/support/plugin/buddypress-avatar-cropper-skipper).
+
+__Contributors welcome__
+
+* Submit a [pull request on Github](https://github.com/slimndap/bp-avatar-cropper-skipper)
+
+__Author__
+
+* [Jeroen Schmit, Slim & Dapper](http://slimndap.com)
+
 == Installation ==
 
 Use the plugin installer in WordPress.
 
 == Changelog ==
+
+= 0.2 =
+* Added support for group profile photos.
 
 = 0.1 =
 * First version submitted to repository.

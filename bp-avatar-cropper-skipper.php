@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: BuddyPress Avatar Cropper Skipper
-Version: 0.1
+Version: 0.2
 Description: Skip the BuddyPress avatar cropper when uploading a new avatar image.
 Author: Jeroen Schmit
 Author URI: http://slimndap.com
-Plugin URI: http://slimndap.com
+Plugin URI: https://wordpress.org/plugins/buddypress-avatar-cropper-skipper/
 */
 
 class BP_Avatar_Cropper_Skipper {
@@ -18,9 +18,12 @@ class BP_Avatar_Cropper_Skipper {
 	 * Skip the Buddypress avatar cropper.
 	 * Automatically crop the uploaded image to the default avatar dimensions.
 	 * @see xprofile_screen_change_avatar()
+	 * @see groups_screen_group_admin_avatar()
 	 */
 
 	function bp_template_redirect() {
+		
+		global $bp;
 	
 		if ( 'crop-image' == bp_get_avatar_admin_step() ) {
 		
@@ -29,13 +32,29 @@ class BP_Avatar_Cropper_Skipper {
 			 */
 			 
 			$args = $this->get_crop_values();
-	
+			
 			if ( ! bp_core_avatar_handle_crop( $args ) ) {
-				bp_core_add_message( __( 'There was a problem cropping your avatar.', 'buddypress' ), 'error' );
+				bp_core_add_message( __( 'There was a problem cropping your profile photo.', 'buddypress' ), 'error' );
 			} else {
-				do_action( 'xprofile_avatar_uploaded' );
-				bp_core_add_message( __( 'Your new avatar was uploaded successfully.', 'buddypress' ) );
-				bp_core_redirect( bp_loggedin_user_domain() );
+				
+				/**
+				 * User is uploading a user avatar.
+				 */
+				
+				if (bp_is_my_profile()) {
+					do_action( 'xprofile_avatar_uploaded' );
+					bp_core_add_message( __( 'Your new profile photo was uploaded successfully.', 'buddypress' ) );
+					bp_core_redirect( bp_loggedin_user_domain() );	
+									
+				}
+				
+				/**
+				 * User is uploading a group avatar.
+				 */
+				if ('group-avatar' == bp_get_group_current_admin_tab()) {
+					bp_core_add_message( __( 'The new group profile photo was uploaded successfully.', 'buddypress' ) );
+					bp_core_redirect( bp_get_group_permalink($bp->groups->current_group) );	
+				}
 			}
 			
 		}
